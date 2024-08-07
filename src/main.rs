@@ -8,18 +8,16 @@ mod schema;
 use db::Db;
 use diesel::prelude::*;
 use models::Image;
-use rocket::http::ContentType;
-use rocket::response::content;
 
 #[get("/images/<id>")]
-async fn get_image(db: Db, id: i32) -> Option<content<Vec<u8>>> {
+async fn get_image(db: Db, id: i32) -> Option<Vec<u8>> {
     db.run(move |conn| {
         use schema::images::dsl::*;
         images
-            .filter(id.eq(id))
+            .filter(img_id.eq(id))
             .first::<Image>(conn)
             .ok()
-            .map(|img| content::RawHtml("<img{0}>".replace("{0}", std::fs::read(img.img_path)?)))
+            .map(|img: Image| std::fs::read(img.img_path).unwrap())
     })
     .await
 }
