@@ -11,11 +11,10 @@ use models::Image;
 
 use schema::images::dsl::*;
 
-use rocket::http::{ContentType, Status};
-use rocket::response::{Builder, status};
-use rocket::serde::json::Json;
 use rand::random;
-use rocket::Response;
+use rocket::http::{ContentType, Status};
+use rocket::response::status;
+use rocket::serde::json::Json;
 
 #[get("/images?<id>")]
 async fn get_image(db: Db, id: i32) -> Result<(ContentType, Vec<u8>), String> {
@@ -28,7 +27,7 @@ async fn get_image(db: Db, id: i32) -> Result<(ContentType, Vec<u8>), String> {
             .ok_or("Image not found".to_string())
             .map(|img| (ContentType::PNG, img))
     })
-        .await
+    .await
 }
 
 #[post("/postimage?<path>")]
