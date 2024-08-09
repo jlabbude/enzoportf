@@ -2,3 +2,4 @@
 /backend/Rocket.toml
 **/migrations/
 **/.idea
+**/dist/
