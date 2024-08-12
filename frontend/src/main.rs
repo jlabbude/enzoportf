@@ -2,24 +2,32 @@ use serde_json::Value;
 use wasm_bindgen_futures::spawn_local;
 use yew::prelude::*;
 
-#[hook]
-fn use_fetch_image_vec() -> UseStateHandle<Vec<Value>> {
-    #[allow(clippy::redundant_closure)]
-    // Idk why Clippy keeps bugging about this, when the function can only take closures as args
-    let images = use_state_eq(|| Vec::<Value>::new());
-    {
+struct ReturnedImage {
+    img_id: u8,
+    img_path: String,
+}
+
+pub trait RequestedImage {
+    fn handle_images(images: UseStateHandle<Vec<Value>>) -> UseStateHandle<Vec<Value>> {
         let images = images.clone();
         spawn_local(async move {
-            let fetched_images = reqwest::get("http://localhost:8000/all-images")
+            reqwest::get("http://localhost:8000/all-images")
                 .await
                 .unwrap()
                 .json::<Vec<Value>>()
                 .await
                 .unwrap();
-            images.set(fetched_images);
         });
+        images
     }
-    images
+}
+
+impl RequestedImage for ReturnedImage {}
+
+#[hook]
+fn use_fetch_image_vec() -> UseStateHandle<Vec<Value>> {
+    #[allow(clippy::redundant_closure)]
+    <ReturnedImage as RequestedImage>::handle_images(use_state_eq(|| Vec::<Value>::new()))
 }
 
 #[function_component]
@@ -35,7 +43,7 @@ fn App() -> Html {
                         html! {
                             <img src={format!("/api/images?id={}",
                                     image_array["img_id"],
-                                )} class="rounded-s-full"/>
+                                )} class="rounded-s-full "/>
                         }
                     }).collect::<Html>()
                 }
