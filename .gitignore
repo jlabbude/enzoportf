@@ -1,5 +1,6 @@
 */target
 /backend/Rocket.toml
-**/migrations/
+/backend/migrations/
 **/.idea
 **/dist/
+/frontend/static/icon.jpeg

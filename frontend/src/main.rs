@@ -28,14 +28,14 @@ fn App() -> Html {
 
     html! {
         <>
-            <header> <h1 style="text-align: center; font-size: 50px;">{"TODO"}</h1></header>
-            <div id="imagaes">
+            <header> <h1 style="text-align: center; font-size: 50px;" class="font-sans">{"TODO"}</h1></header>
+            <div id="images" class="absolute right-0">
                 {
                     (*images).iter().map(|image_array| {
                         html! {
                             <img src={format!("/api/images?id={}",
                                     image_array["img_id"],
-                                )}class="rounded-full"/>
+                                )} class="rounded-s-full"/>
                         }
                     }).collect::<Html>()
                 }
