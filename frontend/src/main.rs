@@ -7,15 +7,7 @@ pub struct ReturnedImage {
     img_path: String,
 }
 
-pub trait RequestedImage {
-    fn fetch_images(
-        images: UseStateHandle<Vec<ReturnedImage>>,
-    ) -> UseStateHandle<Vec<ReturnedImage>>;
-
-    fn serialize_json(val: &Value) -> ReturnedImage;
-}
-
-impl RequestedImage for ReturnedImage {
+impl ReturnedImage {
     fn serialize_json(val: &Value) -> ReturnedImage {
         ReturnedImage {
             img_id: val["img_id"].as_u64().unwrap() as u8,
@@ -49,7 +41,7 @@ impl RequestedImage for ReturnedImage {
 #[hook]
 fn use_fetch_image_vec() -> UseStateHandle<Vec<ReturnedImage>> {
     #[allow(clippy::redundant_closure)]
-    <ReturnedImage as RequestedImage>::fetch_images(use_state_eq(|| Vec::<ReturnedImage>::new()))
+    ReturnedImage::fetch_images(use_state_eq(|| Vec::<ReturnedImage>::new()))
 }
 
 #[function_component]
