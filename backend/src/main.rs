@@ -7,6 +7,7 @@ mod models;
 mod schema;
 
 use db::Db;
+use diesel::delete;
 use schema::images::dsl::*;
 
 use diesel::{dsl::insert_into, prelude::*};
@@ -35,11 +36,14 @@ async fn get_image(db: Db, id: u8) -> Result<(ContentType, Vec<u8>), String> {
 async fn delete_image(db: Db, name: String) -> Result<Custom<String>, Custom<String>> {
     db.run(move |conn| {
         images
-            .filter(img_name.eq(name))
+            .filter(img_name.eq(&name))
             .first::<Image>(conn)
             .ok()
             .and_then(|img: Image| std::fs::remove_file(img.img_path).ok())
-            .ok_or(Custom(Status::BadRequest, String::from("Image not found")))
+            .ok_or(Custom(Status::BadRequest, String::from("Image not found")))?;
+        delete(images.filter(img_name.eq(name)))
+            .execute(conn)
+            .map_err(|err| Custom(Status::BadRequest, err.to_string()))
     })
     .await?;
 
