@@ -1,7 +1,7 @@
 use serde_json::Value;
 use yew::prelude::*;
 
-#[derive(PartialEq)]
+#[derive(PartialEq, Properties, Clone)]
 pub struct ReturnedImage {
     img_id: u8,
     img_path: String,
@@ -38,6 +38,24 @@ impl ReturnedImage {
     }
 }
 
+fn returned_image_to_html(
+    image_vec: std::slice::Iter<ReturnedImage>,
+) -> impl Iterator<Item = Html> + '_ {
+    image_vec.map(|image| {
+        html! {<img src={format!("/api/images?id={}",
+            image.img_id,
+        )} class="rounded-s-full "/>}
+    })
+}
+
+#[function_component]
+fn Image(image: &ReturnedImage) -> Html {
+    html! {
+        <img src={format!("/api/images?id={0}", image.img_id,
+        )} class="rounded-s-full hover:p-10"/>
+    }
+}
+
 #[hook]
 fn use_fetch_image_vec() -> UseStateHandle<Vec<ReturnedImage>> {
     #[allow(clippy::redundant_closure)]
@@ -52,15 +70,7 @@ fn App() -> Html {
         <>
             <header> <h1 style="text-align: center; font-size: 50px;" class="font-sans">{"TODO"}</h1></header>
             <div id="images" class="absolute right-0">
-                {
-                    (*images).iter().map(|image_array| {
-                        html! {
-                            <img src={format!("/api/images?id={}",
-                                    image_array.img_id,
-                                )} class="rounded-s-full "/>
-                        }
-                    }).collect::<Html>()
-                }
+            { returned_image_to_html(images.iter()).collect::<Html>() }
             </div>
         </>
     }
