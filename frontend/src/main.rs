@@ -22,7 +22,7 @@ impl ReturnedImage {
             let images = images.clone();
             wasm_bindgen_futures::spawn_local(async move {
                 images.set(
-                    reqwest::get("http://localhost:8000/all-images")
+                    reqwest::get("http://localhost:8000/all_images")
                         .await
                         .unwrap()
                         .json::<Vec<Value>>()
@@ -38,21 +38,20 @@ impl ReturnedImage {
     }
 }
 
-fn returned_image_to_html(
-    image_vec: std::slice::Iter<ReturnedImage>,
-) -> impl Iterator<Item = Html> + '_ {
-    image_vec.map(|image| {
-        html! {<img src={format!("/api/images?id={}",
-            image.img_id,
-        )} class="rounded-s-full "/>}
-    })
+fn image_vec_to_html(image_vec: Vec<ReturnedImage>) -> Html {
+    image_vec
+        .iter()
+        .map(|image| {
+            html! { <Image ..image.clone()/> }
+        })
+        .collect::<Html>()
 }
 
 #[function_component]
 fn Image(image: &ReturnedImage) -> Html {
     html! {
-        <img src={format!("/api/images?id={0}", image.img_id,
-        )} class="rounded-s-full hover:p-10"/>
+        <img src={ format!("/api/images?id={0}", image.img_id) }
+             class="rounded-s-full hover:p-10"/>
     }
 }
 
@@ -70,7 +69,7 @@ fn App() -> Html {
         <>
             <header> <h1 style="text-align: center; font-size: 50px;" class="font-sans">{"TODO"}</h1></header>
             <div id="images" class="absolute right-0">
-            { returned_image_to_html(images.iter()).collect::<Html>() }
+            { image_vec_to_html(images.to_vec()) }
             </div>
         </>
     }
