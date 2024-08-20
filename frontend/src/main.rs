@@ -51,7 +51,7 @@ fn image_vec_to_html(image_vec: Vec<ReturnedImage>) -> Html {
 fn Image(image: &ReturnedImage) -> Html {
     html! {
         <img src={ format!("/api/images?id={0}", image.img_id) }
-             class="rounded-s-full hover:p-10"/>
+             class="rounded-s-full absolute right-0"/>
     }
 }
 
@@ -67,8 +67,14 @@ fn App() -> Html {
 
     html! {
         <>
-            <header> <h1 style="text-align: center; font-size: 50px;" class="font-sans">{"TODO"}</h1></header>
-            <div id="images" class="absolute right-0">
+            <div class="shape text enso-ferna-d72db92ebfdd absolute">
+                <p class="paragraph root-0-paragraph-set-0-paragraph-0 enso_fernandes">{
+                    "ENSO FERNANDES"
+                }</p>
+            </div>
+            <div class="shape rect aimaina-d4db9f327537"><img src="img/aimaina.jpg"/></div>
+            <div class="block shape rect rectangle-d6b2a0edcdc9"/>
+            <div id="images">
             { image_vec_to_html(images.to_vec()) }
             </div>
         </>
