@@ -1,6 +1,7 @@
-*/target
+**/target/
 /backend/Rocket.toml
 /backend/migrations/
 **/.idea
 **/dist/
-/frontend/static/icon.jpeg
+/frontend/static/**
+frontend/tailwind.css

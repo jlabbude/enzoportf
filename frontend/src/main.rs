@@ -51,7 +51,7 @@ fn image_vec_to_html(image_vec: Vec<ReturnedImage>) -> Html {
 fn Image(image: &ReturnedImage) -> Html {
     html! {
         <img src={ format!("/api/images?id={0}", image.img_id) }
-             class="rounded-s-full absolute right-0"/>
+             class="rounded-full"/>
     }
 }
 
@@ -73,7 +73,7 @@ fn App() -> Html {
                 }</p>
             </div>
             <div class="shape rect aimaina-d4db9f327537"><img src="img/aimaina.jpg"/></div>
-            <div class="block shape rect rectangle-d6b2a0edcdc9"/>
+            <div class="block shape rect navbar"/>
             <div id="images">
             { image_vec_to_html(images.to_vec()) }
             </div>

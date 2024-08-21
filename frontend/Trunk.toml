@@ -2,11 +2,6 @@
 target = "index.html"
 dist = "dist"
 
-[[hooks]]
-stage = "build"
-command = "sh"
-command_arguments = ["-c", "tailwindcsscli -i tailwind.css -o $TRUNK_STAGING_DIR/tailwind.css"]
-
 [serve]
 address = "127.0.0.1"
 port = 8080
