@@ -22,7 +22,7 @@ impl ReturnedImage {
             let images = images.clone();
             wasm_bindgen_futures::spawn_local(async move {
                 images.set(
-                    reqwest::get("http://localhost:8000/all_images")
+                    reqwest::get("http://192.168.15.11:8000/all_images")
                         .await
                         .unwrap()
                         .json::<Vec<Value>>()

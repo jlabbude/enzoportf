@@ -4,4 +4,4 @@
 **/.idea
 **/dist/
 /frontend/static/**
-frontend/tailwind.css
+/frontend/tailwind.css
