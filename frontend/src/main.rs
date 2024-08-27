@@ -69,7 +69,7 @@ fn App() -> Html {
         <>
             <div class="shape text enso-ferna-d72db92ebfdd absolute">
                 <p class="paragraph root-0-paragraph-set-0-paragraph-0 enso_fernandes">{
-                    "ENSO FERNANDES"
+                    "ENZO FERNANDES"
                 }</p>
             </div>
             <div class="shape rect aimaina-d4db9f327537"><img src="img/aimaina.jpg"/></div>
